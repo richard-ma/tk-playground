@@ -35,8 +35,8 @@ class ShapeCreator:
 
 
 class NoiseRectShapeCreator(ShapeCreator):
-    def __init__(self, canvas, color_generator, start=[0, 0], indent=[100, 100], size=[1000, 1000], noise=0, noise_start=0):
-        assert noise >= noise_start
+    def __init__(self, canvas, color_generator, start=[0, 0], indent=[100, 100], size=[1000, 1000], noise=[0, 0]):
+        assert noise[1] >= noise[0]
 
         self.canvas = canvas
         self.color_generator = color_generator
@@ -44,7 +44,6 @@ class NoiseRectShapeCreator(ShapeCreator):
         self.indent = indent
         self.size = size
         self.noise = noise
-        self.noise_start = noise_start
 
     def create(self):
         xs = (self.size[0] - self.start[0]) // self.indent[0]
@@ -54,14 +53,14 @@ class NoiseRectShapeCreator(ShapeCreator):
             for y in range(ys):
                 # coordinates unclockwise
                 coords = [
-                    x * self.indent[0] + self.start[0] + random.randint(self.noise_start, self.noise),
-                    y * self.indent[1] + self.start[1] + random.randint(self.noise_start, self.noise),
-                    x * self.indent[0] + self.start[0] + random.randint(self.noise_start, self.noise),
-                    y * self.indent[1] + self.start[1] + self.indent[1] - random.randint(self.noise_start, self.noise),
-                    x * self.indent[0] + self.start[0] + self.indent[0] - random.randint(self.noise_start, self.noise),
-                    y * self.indent[1] + self.start[1] + self.indent[1] - random.randint(self.noise_start, self.noise),
-                    x * self.indent[0] + self.start[0] + self.indent[0] - random.randint(self.noise_start, self.noise),
-                    y * self.indent[1] + self.start[1] + random.randint(self.noise_start, self.noise),
+                    x * self.indent[0] + self.start[0] + random.randint(*self.noise),
+                    y * self.indent[1] + self.start[1] + random.randint(*self.noise),
+                    x * self.indent[0] + self.start[0] + random.randint(*self.noise),
+                    y * self.indent[1] + self.start[1] + self.indent[1] - random.randint(*self.noise),
+                    x * self.indent[0] + self.start[0] + self.indent[0] - random.randint(*self.noise),
+                    y * self.indent[1] + self.start[1] + self.indent[1] - random.randint(*self.noise),
+                    x * self.indent[0] + self.start[0] + self.indent[0] - random.randint(*self.noise),
+                    y * self.indent[1] + self.start[1] + random.randint(*self.noise),
                 ]
                 self.canvas.create_polygon(coords, fill=self.color_generator.generat())
 
@@ -70,8 +69,8 @@ if __name__ == "__main__":
     size = [1000, 1000]
     start = [0, 0]
     indent = [50, 50]
-    noise = indent[0] // random.randint(3, indent[0] // 3)
-    color_generator = RandomColorGenerator(r_max=0, g_max=0, b_min=127)
+    noise = [0, 10]
+    color_generator = RandomColorGenerator(g_max=0)
 
     root = Tk()
     c = Canvas(root, bg="black", height=1000, width=1000)
@@ -83,8 +82,7 @@ if __name__ == "__main__":
         start=start,
         indent=indent,
         size=size,
-        noise=noise,
-        noise_start=noise - random.randint(2, noise))
+        noise=noise)
     sc.create()
 
     root.mainloop()
