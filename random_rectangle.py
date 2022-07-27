@@ -65,17 +65,8 @@ class NoiseRectShapeCreator(ShapeCreator):
                 self.canvas.create_polygon(coords, fill=self.color_generator.generat())
 
 
-if __name__ == "__main__":
-    size = [1920, 1080]
-    start = [0, 0]
-    indent = [60, 60]
-    noise = [0, 10]
-    color_generator = RandomColorGenerator(b_max=0)
-
-    root = Tk()
-    c = Canvas(root, bg="black", width=size[0], height=size[1])
-    c.pack()
-
+def timer():
+    c.delete('all')
     sc = NoiseRectShapeCreator(
         c,
         color_generator,
@@ -84,5 +75,21 @@ if __name__ == "__main__":
         size=size,
         noise=noise)
     sc.create()
+    c.update()
+    root.after(2000, timer)
+
+
+if __name__ == "__main__":
+    size = [1920, 1080]
+    start = [0, 0]
+    indent = [120, 120]
+    noise = [0, 10]
+    color_generator = RandomColorGenerator(r_max=0)
+
+    root = Tk()
+    c = Canvas(root, bg="black", width=size[0], height=size[1])
+    c.pack()
+
+    root.after(0, timer)
 
     root.mainloop()
