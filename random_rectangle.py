@@ -66,14 +66,14 @@ class NoiseRectShapeCreator(ShapeCreator):
 
 
 if __name__ == "__main__":
-    size = [1000, 1000]
+    size = [1920, 1080]
     start = [0, 0]
-    indent = [50, 50]
+    indent = [60, 60]
     noise = [0, 10]
-    color_generator = RandomColorGenerator(g_max=0)
+    color_generator = RandomColorGenerator(b_max=0)
 
     root = Tk()
-    c = Canvas(root, bg="black", height=1000, width=1000)
+    c = Canvas(root, bg="black", width=size[0], height=size[1])
     c.pack()
 
     sc = NoiseRectShapeCreator(
